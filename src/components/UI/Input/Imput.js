@@ -1,7 +1,21 @@
-import React from "react";
+import React,{useRef,useImperativeHandle} from "react";
 import classes from './input.module.css';
 
-const Imput = (props) =>{
+const Imput =React.forwardRef( (props, ref) =>{
+  //useRef
+  const inputRef = useRef();
+
+  const activate= () =>{
+    inputRef.current.focus();
+  }
+
+  //use imparative handel
+  useImperativeHandle(ref,()=>{
+    return{
+      focus: activate,
+    };
+  })
+
     return <div
     className={`${classes.control} ${
       props.isValid === false ? classes.invalid : ''
@@ -9,6 +23,7 @@ const Imput = (props) =>{
   >
     <label htmlFor={props.id}>{props.label}</label>
     <input
+    ref={inputRef}
       type={props.type}
       id={props.id}
       value={props.value}
@@ -16,6 +31,6 @@ const Imput = (props) =>{
       onBlur={props.onBlur}
     />
   </div>
-}
+})
 
 export default Imput;
